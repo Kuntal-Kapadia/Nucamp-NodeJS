@@ -37,9 +37,9 @@ router.post('/signup', (req, res) => {
                   res.setHeader('Content-Type', 'application/json');
                   res.json({success: true, status: 'Registration Successful!'});
               });
-          }
+          })
       }
-  );
+    });
 });
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
