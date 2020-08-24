@@ -19,8 +19,7 @@ const partnerRouter = require('./routes/partnerRouter');
 
 const mongoose = require('mongoose');
 
-// const url = 'mongodb://localhost:27017/nucampsite';
-const url = config.mongoUrl;
+const url = 'mongodb://localhost:27017/nucampsite';
 const connect = mongoose.connect(url, {
     useCreateIndex: true,
     useFindAndModify: false,
@@ -33,6 +32,17 @@ connect.then(() => console.log('Connected correctly to server'),
 );
 
 var app = express();
+
+// Secure traffic only
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  } else {
+      console.log(`Redirecting to: https://${req.hostname}:${app.get('secPort')}${req.url}`);
+      res.redirect(301, `https://${req.hostname}:${app.get('secPort')}${req.url}`);
+  }
+});
+
 app.use(passport.initialize());
 
 
@@ -47,7 +57,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// app.use(auth);
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
