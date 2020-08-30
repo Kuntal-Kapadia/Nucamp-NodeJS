@@ -1,7 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-// var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const passport = require('passport');
@@ -17,6 +16,7 @@ const campsiteRouter = require('./routes/campsiteRouter');
 const promotionRouter = require('./routes/promotionRouter');
 const partnerRouter = require('./routes/partnerRouter');
 const uploadRouter = require('./routes/uploadRouter');
+const favoriteRouter = require('./routes/favoriteRouter');
 
 
 const mongoose = require('mongoose');
@@ -58,13 +58,12 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/campsites', campsiteRouter);
 app.use('/promotions', promotionRouter);
 app.use('/partners', partnerRouter);
 app.use('/imageUpload', uploadRouter);
+app.use('/favorites', favoriteRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
